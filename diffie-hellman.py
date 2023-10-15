@@ -12,6 +12,8 @@ BLOCK_SIZE = 16         # 128 bits
 
 def calc_key(p,g, a) :      #p and g comes from sender
     val = g**(a)
+def calc_key(p,g, a) :      #p and g comes from sender
+    val = g**(a)
     return val % p
 
 def key_exchange(their_value,my_int,p) : #A is calculated by opposite party
