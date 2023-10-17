@@ -10,8 +10,7 @@ from Crypto.Hash import SHA256
 
 BLOCK_SIZE = 16         # 128 bits
 
-def calc_key(p,g, a) :      #p and g comes from sender
-    val = g**(a)
+
 def calc_key(p,g, a) :      #p and g comes from sender
     val = g**(a)
     return val % p
@@ -43,10 +42,12 @@ if __name__ == "__main__":
     alice_key = bin(int(key_exchange(bob, alice_a, p), 16))[2:18]
     bob_key = bin(int(key_exchange(alice, bob_b, p),16))[2:18]
  
-
+    print("Alice's key:", alice_key)
+    print("Bob's key:", bob_key)
+    print("Same?", alice_key == bob_key)
     print("Alice's cipher:", create_cipher(pad(b"hi bob", 16), str(alice_key), iv))
     print("Bob's cipher:", create_cipher(pad(b"hi alice", 16), str(bob_key), iv))
 
     a_msg = create_cipher(pad(b"hi bob", 16), str(alice_key), iv)
     b_msg = create_cipher(pad(b"hi alice", 16), str(bob_key), iv)
-    print("Bob's decrypted message: ", exchange_message(unpad(b_msg,16), str(alice_key), iv))
+    #print("Bob's decrypted message: ", exchange_message(unpad(b_msg,16), str(alice_key), iv))
