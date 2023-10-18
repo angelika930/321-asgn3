@@ -39,7 +39,7 @@ def exchange_message(message: bytes, key:str, iv: bytes) -> bytes: #takes in the
 
 if __name__ == "__main__":
     p = 37
-    g = 5
+    g = p-1
 
     # HUHHHH p and g                        ????
     # p = noSpace("B10B8F96 A080E01D DE92DE5E AE5D54EC 52C99FBC FB06A3C6 9A6A9DCA 52D23B61 6073E286 75A23D18 9838EF1E 2EE652C0 13ECB4AE A9061123 24975C3C D49B83BF ACCBDD7D 90C4BD70 98488E9C 219A7372 4EFFD6FA E5644738 FAA31A4F F55BCCC0 A151AF5F 0DC8B4BD 45BF37DF 365C1A65 E68CFDA7 6D4DA708 DF1FB2BC 2E4A4371")
@@ -47,17 +47,17 @@ if __name__ == "__main__":
 
     iv = get_random_bytes(16)
     alice_a = randint(1, p-2)
-    alice = calc_key(p, g, alice_a)
+    alice = calc_key(p, g, alice_a) # 0
     bob_b = randint(1, p-2)
-    bob = calc_key(p, g, bob_b)
+    bob = calc_key(p, g, bob_b) # 0
 
     alice_key = bin(int(key_exchange(bob, alice_a, p), 16))[2:18]
     bob_key = bin(int(key_exchange(alice, bob_b, p),16))[2:18]
 
-    # tampering with keys
-    mallory_key = 1010111101010101
-    alice_key = mallory_key
-    bob_key = mallory_key
+    # tampering with keys (Task 2A)
+    # mallory_key = 1010111101010101
+    # alice_key = mallory_key
+    # bob_key = mallory_key
 
     print("Alice's key:", alice_key)
     print("Bob's key:", bob_key)
@@ -69,5 +69,29 @@ if __name__ == "__main__":
     b_msg = create_cipher(pad(b"hi alice", 16), str(bob_key), iv)
     print("Bob's decrypted message: ", exchange_message(b_msg, str(bob_key), iv))
     print("Alice's decrypted message: ", exchange_message(a_msg, str(alice_key), iv))
+   
+    # g = p ------------------------------------------------------------------------------------------------------------
+    # p = 37
+    # g = p
+    # h = SHA256.new(data = bytes(0))
+    # mallory_key = bin(int(h.hexdigest(),16))[2:18]
+    # print(mallory_key)
+    # print("Mallory's decrypted message (from Alice): ", exchange_message(a_msg, str(mallory_key), iv))
+    # print("Mallory's decrypted message (from Bob): ", exchange_message(b_msg, str(mallory_key), iv))
+
+    # g = 1 ------------------------------------------------------------------------------------------------------------
+    # h = SHA256.new(data = bytes(1))
+    # mallory_key = bin(int(h.hexdigest(),16))[2:18]
+    # print(mallory_key)
+    # print("Mallory's decrypted message (from Alice): ", exchange_message(a_msg, str(mallory_key), iv))
+    # print("Mallory's decrypted message (from Bob): ", exchange_message(b_msg, str(mallory_key), iv))
+
+   # g = p -------------------------------------------------------------------------------------------------------------
+    if (alice_a % 2 == 0):
+        h = SHA256.new(data = bytes(1))
+    else:
+        h = SHA256.new(data = bytes(p-1))
+    mallory_key = bin(int(h.hexdigest(),16))[2:18]
+    print(mallory_key)
     print("Mallory's decrypted message (from Alice): ", exchange_message(a_msg, str(mallory_key), iv))
     print("Mallory's decrypted message (from Bob): ", exchange_message(b_msg, str(mallory_key), iv))
