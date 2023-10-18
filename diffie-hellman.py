@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # print("Mallory's decrypted message (from Alice): ", exchange_message(a_msg, str(mallory_key), iv))
     # print("Mallory's decrypted message (from Bob): ", exchange_message(b_msg, str(mallory_key), iv))
 
-   # g = p -------------------------------------------------------------------------------------------------------------
+   # g = p-1 -------------------------------------------------------------------------------------------------------------
     if (alice_a % 2 == 0):
         h = SHA256.new(data = bytes(1))
     else:
