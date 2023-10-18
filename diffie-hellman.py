@@ -53,7 +53,7 @@ if __name__ == "__main__":
     alice_key = bin(int(key_exchange(bob, alice_a, p), 16))[2:18]
     bob_key = bin(int(key_exchange(alice, bob_b, p),16))[2:18]
 
-    alice_key = bin(44885
+    alice_key = bin(44885)
     bob_key = 1010111101010101
 
     print("Alice's key:", alice_key)
