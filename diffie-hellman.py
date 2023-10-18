@@ -29,7 +29,9 @@ def create_cipher(message, key, iv):
 def exchange_message(message, key, iv): #takes in the encrypted message
     cipher = AES.new(key.encode("utf8"), AES.MODE_CBC, iv)
     decrypted = cipher.decrypt(message)
+    decrypted = unpad(decrypted, BLOCK_SIZE)
     return decrypted
+
 if __name__ == "__main__":
     p = 37
     g = 5
@@ -50,4 +52,5 @@ if __name__ == "__main__":
 
     a_msg = create_cipher(pad(b"hi bob", 16), str(alice_key), iv)
     b_msg = create_cipher(pad(b"hi alice", 16), str(bob_key), iv)
-    #print("Bob's decrypted message: ", exchange_message(unpad(b_msg,16), str(alice_key), iv))
+    print("Bob's decrypted message: ", exchange_message(b_msg, str(bob_key), iv))
+    print("Alice's decrypted message: ", exchange_message(a_msg, str(alice_key), iv))
