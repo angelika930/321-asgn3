@@ -1,7 +1,5 @@
 # Task 3
 from Crypto.Util.number import getPrime
-import random
-import math
 from binascii import hexlify
 from minm_attack import *
 
@@ -51,7 +49,7 @@ def textbook_rsa_attack():
    q = getPrime(512)   
    n = p * q
    phi = (p-1)*(q-1)
-   
+
    bob_s = 13
    c = RSA_encrypt(bob_s,e,n)
    print("Bob's original cipher:", c)
