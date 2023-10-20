@@ -39,10 +39,7 @@ def textbook_rsa():
    print("original msg:", m)
    m = int(hexlify(b"hello angelika"), 16)
    encrypted_msg = RSA_encrypt(m,e,n)
-   #print("encoded msg:", encrypted_msg)
    d = pow(e, -1, phi)
-   #fake_d = (e**-1) % phi          # WHY ARE THESE DIFFERENT???
-   #print("d:", d)
 
    decrypted_msg = hex(RSA_decrypt(encrypted_msg,d,n))[2:]
    msg = bytes.fromhex(decrypted_msg).decode('utf-8')
@@ -54,15 +51,15 @@ def textbook_rsa_attack():
    q = getPrime(512)   
    n = p * q
    phi = (p-1)*(q-1)
+   
    bob_s = 13
    c = RSA_encrypt(bob_s,e,n)
-   #print("bob's original cipher to Alice", c)
-   # MALLORY DOES fishy shit
-   # f(c) mallebility attack
+   print("Bob's original cipher:", c)
+
+   # f(c) mallebility attack starts here
    mallory_m = 333
    print("mallory's mallebility attack:", mallory_m)
-
-   c = pow((2*mallory_m), e, n)           # why does this work when u dont multiply by 2 but bruce's notes say to???
+   c = pow((mallory_m), e, n)
    
    d = pow(e, -1, phi)
    alice_s = RSA_decrypt(c, d, n)
