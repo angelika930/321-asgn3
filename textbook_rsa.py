@@ -57,7 +57,7 @@ def textbook_rsa_attack():
    # f(c) mallebility attack starts here
    mallory_m = 333
    print("mallory's mallebility attack:", mallory_m)
-   c = pow((mallory_m), e, n)
+   c = pow(mallory_m, e, n)
    
    d = pow(e, -1, phi)
    alice_s = RSA_decrypt(c, d, n)
