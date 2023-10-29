@@ -1,6 +1,5 @@
 # Task 4
 from minm_attack import *
-from random import randint
 from Crypto.Hash import SHA256
 import time
 import random
@@ -13,23 +12,32 @@ def collisions(input: bytes):
     # print("Hashed input in hex:", hash.hexdigest())
 
 def find_collision(num):  #takes in a number of bits to randomly generate
-    di_dict = {}
-    seconds = time.thread_time()
+    original = str(random.getrandbits(8)).encode('utf-8')
+
+    start_time = time.perf_counter()
+    start = 0
     count = 0
-    while True:
-        data = str(random.getrandbits(num)).encode('utf-8')
-        hash = SHA256.new(data)
-        digest = hash.hexdigest()
-        digest = collisions(digest)
-        if digest in di_dict:
-            print("Collision found!")
-            print("Hash Digest: ", digest)
-            print("Count: ", count)
-            print("Time: ", seconds)
-            return
-        
-        di_dict[digest] = num
-        count +=1
+    org_brute_force = SHA256.new(original)
+    org_brute_force = bin(int(org_brute_force.hexdigest(), 16))[2:10]
+    brute_force = 0
+
+    while brute_force != org_brute_force:
+        count += 1
+        start += 1
+        brute_force = SHA256.new(str(start).encode('utf-8'))
+        brute_force = bin(int(brute_force.hexdigest(), 16))[2:10]
+    
+    end_time = time.perf_counter()
+    seconds = end_time - start_time
+
+    print("Original:", int.from_bytes(original, byteorder='little'))
+    print("Brute forced:", int(start))
+    print("Collision found!")
+    print("Hash Digest: ", brute_force)
+    print("Count: ", count)
+    print("Time: ", seconds)
+    return
+
 
 
 

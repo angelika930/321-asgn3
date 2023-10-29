@@ -3,23 +3,6 @@ from Crypto.Util.number import getPrime
 from binascii import hexlify
 from minm_attack import *
 
-
-#calculates the inverse of a number mod n
-def inverse(a,n) :
-   t = 0
-   r = n
-   new_t = 1
-   new_r = a
-   while (new_r != 0) :
-       quotient = r/new_r
-       (t,new_t) = (new_t, t - (quotient * new_t))
-       (r, new_r) = (new_r, r - (quotient * new_r))
-   if (r > 1) :
-         return "a is not invertible"
-   if (t < 0) :
-      t = t + n
-   return t
-
 def RSA_encrypt(m,e,n):
    return pow(m,e,n)
 
